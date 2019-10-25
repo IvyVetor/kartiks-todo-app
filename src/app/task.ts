@@ -1,10 +1,9 @@
 export class Task {
   id: number;
-  title: string;
-  complete: boolean;
+  title = '';
+  complete = false;
 
-  constructor(title: string, complete: boolean) {
-    this.title = title;
-    this.complete = complete;
+  constructor(values: Object = {}) {
+    Object.assign(this, values);
   }
 }

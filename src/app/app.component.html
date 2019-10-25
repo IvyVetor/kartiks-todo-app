@@ -1,4 +1,4 @@
 <div>
   <h1>Header</h1>
-  <input>
+  <input class="new-task" [(ngModel)]="newTask.title" (keyup.enter)="addTask()">
 </div>
