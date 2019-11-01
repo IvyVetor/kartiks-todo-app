@@ -8,7 +8,8 @@ describe('Task', () => {
 
   it('should be constructed correctly', () => {
     const newTask = new Task({
-      title: 'randomTitle', complete: false})
+      title: 'randomTitle', complete: false
+    });
     expect(newTask.title).toEqual('randomTitle');
     expect(newTask.complete).toBeFalsy();
   });
