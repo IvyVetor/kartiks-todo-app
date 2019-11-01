@@ -19,4 +19,8 @@ export class AppComponent {
     this.taskDataService.createNewTask(this.newTask);
     this.newTask = new Task();
   }
+
+  get tasks() {
+    return this.taskDataService.getAllTasks();
+  }
 }

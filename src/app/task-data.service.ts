@@ -15,4 +15,8 @@ export class TaskDataService {
     this.tasks.push(task);
     return this;
   }
+
+  getAllTasks(): Task[] {
+    return this.tasks;
+  }
 }

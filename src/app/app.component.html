@@ -1,4 +1,15 @@
 <div>
-  <h1>Header</h1>
-  <input class="new-task" [(ngModel)]="newTask.title" (keyup.enter)="addTask()">
+  <div>
+    <h1>Header</h1>
+    <input class="new-task" [(ngModel)]="newTask.title" (keyup.enter)="addTask()">
+  </div>
+  <div>
+    <ul class="task-list">
+      <li *ngFor="let task of tasks">
+        <div>
+          <label>{{task.title}}</label>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
