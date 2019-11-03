@@ -7,10 +7,11 @@
     <ul class="task-list">
       <li *ngFor="let task of tasks">
         <div>
-          <label>{{task.title}}</label>
-          <input class="toggle" type="checkbox" [checked]="task.complete">
+          <label class="task-title">{{task.title}}</label>
+          <input class="toggle" type="checkbox" (click)="toggleComplete(task)" [checked]="task.complete">
         </div>
       </li>
     </ul>
+    <button class="clear-tasks" (click)="clearCompletedTasks()">Remove Completed Tasks</button>
   </div>
 </div>

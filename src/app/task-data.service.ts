@@ -28,4 +28,9 @@ export class TaskDataService {
   toggleComplete(task: Task) {
     task.complete = !task.complete;
   }
+
+  clearCompletedTasks() {
+    this.tasks = this.tasks.filter(task => !task.complete);
+    return this.tasks;
+  }
 }

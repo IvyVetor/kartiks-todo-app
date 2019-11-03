@@ -34,11 +34,7 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('h1').textContent).toContain('Header');
   });
 
-  it('should have a newTask task', () => {
-    expect(app.newTask instanceof Task).toBeTruthy();
-  });
-
-  describe('addTask()', () => {
+  describe('taskFunctions', () => {
     let taskInput: Element;
     let toggleInput;
     let label: Element;
@@ -49,20 +45,58 @@ describe('AppComponent', () => {
         .query(By.css('input')).nativeElement
         .dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
       fixture.detectChanges();
-      label = fixture.debugElement.query(By.css('label')).nativeElement;
+      label = fixture.debugElement.query(By.css('.task-title')).nativeElement;
       toggleInput = fixture.debugElement.query(By.css('.toggle')).nativeElement;
     }));
 
-    it('should list tasks', () => {
-      expect(label.textContent).toContain('some task');
-      expect(toggleInput.checked).toBeFalsy();
+    describe('addTask()', () => {
+      it('should have a newTask task', () => {
+        expect(app.newTask instanceof Task).toBeTruthy();
+      });
+
+      it('should list tasks', () => {
+        expect(label.textContent).toContain('some task');
+        expect(toggleInput.checked).toBeFalsy();
+      });
+
+      it('should toggle task', () => {
+        expect(toggleInput.checked).toBeFalsy();
+        toggleInput.click();
+        fixture.detectChanges();
+        expect(toggleInput.checked).toBeTruthy();
+      });
     });
 
-    it('should toggle task', () => {
-      expect(toggleInput.checked).toBeFalsy();
-      toggleInput.click();
-      fixture.detectChanges();
-      expect(toggleInput.checked).toBeTruthy();
+    describe('clearAllTasks()', () => {
+      let taskInput2;
+      let taskInput3;
+
+      beforeEach(async(() => {
+        app.newTask.title = 'another task';
+        taskInput2 = fixture.debugElement
+          .query(By.css('input')).nativeElement
+          .dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+        app.newTask.title = 'third task';
+        taskInput3 = fixture.debugElement
+          .query(By.css('input')).nativeElement
+          .dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+        fixture.detectChanges();
+        label = fixture.debugElement.query(By.css('.task-title')).nativeElement;
+      }));
+
+      it('should clear all completed tasks', () => {
+        const toggles = fixture.debugElement.queryAll(By.css('.toggle'));
+        toggles[1].nativeElement.click();
+        toggles[2].nativeElement.click();
+        let tasks = fixture.debugElement.queryAll(By.css('.task-title'));
+        expect(tasks.length).toBe(3);
+
+        fixture.debugElement.query(By.css('.clear-tasks')).nativeElement.click();
+        fixture.detectChanges();
+
+        tasks = fixture.debugElement.queryAll(By.css('.task-title'));
+        expect(tasks.length).toBe(1);
+      });
     });
   });
 });

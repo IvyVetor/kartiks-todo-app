@@ -20,6 +20,14 @@ export class AppComponent {
     this.newTask = new Task();
   }
 
+  toggleComplete(task: Task) {
+    return this.taskDataService.toggleComplete(task);
+  }
+
+  clearCompletedTasks() {
+    return this.taskDataService.clearCompletedTasks();
+  }
+
   get tasks() {
     return this.taskDataService.getAllTasks();
   }
