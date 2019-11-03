@@ -1,4 +1,4 @@
-import {TestBed, async} from '@angular/core/testing';
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 import {Task} from './task';
@@ -6,6 +6,9 @@ import {FormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 
 describe('AppComponent', () => {
+  let app: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -16,43 +19,50 @@ describe('AppComponent', () => {
         AppComponent
       ],
     }).compileComponents();
+    fixture = TestBed.createComponent(AppComponent);
+    app = fixture.debugElement.componentInstance;
   }));
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
+  it('should create the app with app title', () => {
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'kartiks-todo-app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('kartiks-todo-app');
   });
 
   it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('Header');
   });
 
   it('should have a newTask task', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
     expect(app.newTask instanceof Task).toBeTruthy();
   });
 
-  it('should list tasks', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    app.newTask.title = 'some task';
+  describe('addTask()', () => {
+    let taskInput: Element;
+    let toggleInput;
+    let label: Element;
 
-    const inputElement = fixture.debugElement.query(By.css('input'));
-    const keyboardEvent = new KeyboardEvent('keyup', {key: 'Enter'})
-    inputElement.nativeElement.dispatchEvent(keyboardEvent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('label').textContent).toContain('some task');
+    beforeEach(async(() => {
+      app.newTask.title = 'some task';
+      taskInput = fixture.debugElement
+        .query(By.css('input')).nativeElement
+        .dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+      fixture.detectChanges();
+      label = fixture.debugElement.query(By.css('label')).nativeElement;
+      toggleInput = fixture.debugElement.query(By.css('.toggle')).nativeElement;
+    }));
+
+    it('should list tasks', () => {
+      expect(label.textContent).toContain('some task');
+      expect(toggleInput.checked).toBeFalsy();
+    });
+
+    it('should toggle task', () => {
+      expect(toggleInput.checked).toBeFalsy();
+      toggleInput.click();
+      fixture.detectChanges();
+      expect(toggleInput.checked).toBeTruthy();
+    });
   });
 });

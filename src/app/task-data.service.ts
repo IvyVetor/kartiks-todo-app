@@ -24,4 +24,8 @@ export class TaskDataService {
   getAllTasks(): Task[] {
     return this.tasks;
   }
+
+  toggleComplete(task: Task) {
+    task.complete = !task.complete;
+  }
 }

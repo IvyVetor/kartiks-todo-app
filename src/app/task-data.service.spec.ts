@@ -33,31 +33,43 @@ describe('TaskDataService', () => {
     expect(service.tasks).toEqual([]);
   });
 
-  it('should create new task', () => {
-    const service: TaskDataService = TestBed.get(TaskDataService);
-    const task = new Task({title: 'random string'});
-    service.createNewTask(task);
-    expect(service.tasks).toEqual([task]);
+  describe('#createNewTask(task)', () => {
+    it('should create new task', () => {
+      const service: TaskDataService = TestBed.get(TaskDataService);
+      const task = new Task({title: 'random string'});
+      service.createNewTask(task);
+      expect(service.tasks).toEqual([task]);
+    });
+
+    it('should trim new task title', () => {
+      const service: TaskDataService = TestBed.get(TaskDataService);
+      const task = new Task({title: '  random string   ', complete: false});
+      service.createNewTask(task);
+      expect(service.tasks[0].title).toEqual('random string');
+    });
+
+    it('should not create a task with null title', () => {
+      const service: TaskDataService = TestBed.get(TaskDataService);
+      const task = new Task({title: null, complete: false});
+      service.createNewTask(task);
+      expect(service.tasks).toEqual([]);
+    });
+
+    it('should not create a task with empty title', () => {
+      const service: TaskDataService = TestBed.get(TaskDataService);
+      const task = new Task({title: '    ', complete: false});
+      service.createNewTask(task);
+      expect(service.tasks).toEqual([]);
+    });
   });
 
-  it('should trim new task title', () => {
-    const service: TaskDataService = TestBed.get(TaskDataService);
-    const task = new Task({title: '  random string   ', complete: false});
-    service.createNewTask(task);
-    expect(service.tasks[0].title).toEqual('random string');
-  });
-
-  it('should not create a task with null title', () => {
-    const service: TaskDataService = TestBed.get(TaskDataService);
-    const task = new Task({title: null, complete: false});
-    service.createNewTask(task);
-    expect(service.tasks).toEqual([]);
-  });
-
-  it('should not create a task with empty title', () => {
-    const service: TaskDataService = TestBed.get(TaskDataService);
-    const task = new Task({title: '    ', complete: false});
-    service.createNewTask(task);
-    expect(service.tasks).toEqual([]);
+  describe('#toggleComplete(task)', () => {
+    it('should toggle "complete" property', () => {
+      const service: TaskDataService = TestBed.get(TaskDataService);
+      const task = new Task({title: 'random String', complete: false});
+      service.createNewTask(task);
+      service.toggleComplete(task);
+      expect(service.tasks[0].complete).toEqual(true);
+    });
   });
 });
