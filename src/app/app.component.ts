@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {TaskDataService} from './task-data.service';
 import {Task} from './task';
 
@@ -10,7 +10,6 @@ import {Task} from './task';
 })
 export class AppComponent {
   title = 'kartiks-todo-app';
-
   newTask: Task = new Task();
 
   constructor(private taskDataService: TaskDataService) {}
@@ -30,5 +29,9 @@ export class AppComponent {
 
   get tasks() {
     return this.taskDataService.getAllTasks();
+  }
+
+  countUncompleted() {
+    return this.tasks.filter(task => !task.complete).length;
   }
 }

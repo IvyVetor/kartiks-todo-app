@@ -1,17 +1,26 @@
-<div>
-  <div>
+<div style="margin-left: 2em;">
+  <div style="margin-bottom: 2em;">
     <h1>Header</h1>
     <input class="new-task" [(ngModel)]="newTask.title" (keyup.enter)="addTask()">
   </div>
   <div>
-    <ul class="task-list">
-      <li *ngFor="let task of tasks">
-        <div>
-          <label class="task-title">{{task.title}}</label>
-          <input class="toggle" type="checkbox" (click)="toggleComplete(task)" [checked]="task.complete">
-        </div>
-      </li>
-    </ul>
-    <button class="clear-tasks" (click)="clearCompletedTasks()">Remove Completed Tasks</button>
+    <table class="task-list" style="width: 40%">
+      <tr>
+        <th style="width: 25%;">Task</th>
+        <th style="width: 5%;">Status</th>
+      </tr>
+      <tr *ngFor="let task of tasks">
+        <td style="text-align:left;"><label contenteditable="true"
+                                            (keydown.enter)="$event.target.blur();$event.preventDefault();"
+                                            class="task-title">{{task.title}}</label></td>
+        <td style="text-align:center;"><input class="toggle" type="checkbox" (click)="toggleComplete(task)"
+                                              [checked]="task.complete"></td>
+      </tr>
+    </table>
+    <br>
+    <div style="margin-top: 2em;">
+      <button class="clear-tasks" (click)="clearCompletedTasks()">Remove Completed Tasks</button>
+      <span class="tasks-left" style="margin-left: 2em;">{{countUncompleted()}} of {{tasks.length}} tasks left</span>
+    </div>
   </div>
 </div>

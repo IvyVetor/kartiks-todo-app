@@ -1,4 +1,4 @@
-import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 import {Task} from './task';
@@ -98,5 +98,68 @@ describe('AppComponent', () => {
         expect(tasks.length).toBe(1);
       });
     });
+
+    describe('countUncompletedTasks', () => {
+      let taskInput2;
+      let taskInput3;
+
+      beforeEach(async(() => {
+        app.newTask.title = 'another task';
+        taskInput2 = fixture.debugElement
+          .query(By.css('input')).nativeElement
+          .dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+        app.newTask.title = 'third task';
+        taskInput3 = fixture.debugElement
+          .query(By.css('input')).nativeElement
+          .dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+        fixture.detectChanges();
+        label = fixture.debugElement.query(By.css('.task-title')).nativeElement;
+      }));
+
+      it('should count uncompleted tasks', () => {
+        const toggles = fixture.debugElement.queryAll(By.css('.toggle'));
+        toggles[1].nativeElement.click();
+        toggles[2].nativeElement.click();
+        const tasks = fixture.debugElement.queryAll(By.css('.task-title'));
+        expect(tasks.length).toBe(3);
+
+        fixture.debugElement.query(By.css('.tasks-left'));
+        fixture.detectChanges();
+
+        const uncompleteTasks = fixture.debugElement.query(By.css('.tasks-left')).nativeElement.textContent;
+        expect(uncompleteTasks).toBe('1 of 3 tasks left');
+      });
+    });
+
+    // describe('edit text inline', () => {
+    //
+    //   it('should change text on click and enter', () => {
+    //     const task = fixture.debugElement.query(By.css('.task-title'));
+    //     task.nativeElement
+    //       .click()
+    //       .sendKeys('walk the doggy')
+    //       .dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+    //
+    //     fixture.debugElement.query(By.css('.task-title'));
+    //     fixture.detectChanges();
+    //
+    //     const editedTask = fixture.debugElement.query(By.css('.task-title')).nativeElement.textContent;
+    //     expect(editedTask).toBe('walk the doggy');
+    //   });
+    //
+    //   it('should not change text on click and enter when empty', () => {
+    //     const task = fixture.debugElement.query(By.css('.task-title'));
+    //     task.nativeElement
+    //       .click()
+    //       .sendKeys('delete')
+    //       .dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+    //
+    //     fixture.debugElement.query(By.css('.task-title'));
+    //     fixture.detectChanges();
+    //
+    //     const editedTask = fixture.debugElement.query(By.css('.task-title')).nativeElement.textContent;
+    //     expect(editedTask).toBe('something');
+    //   });
+    // });
   });
 });
