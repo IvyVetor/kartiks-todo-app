@@ -24,16 +24,16 @@ export class TaskDataService {
   }
 
   getAllTasks(): Task[] {
-    // this.tasks = this.storage.get('tasks');
+    if (this.storage.get('tasks') != null) {
+      this.tasks = this.storage.get('tasks');
+    }
     return this.tasks;
   }
 
   toggleComplete(task: Task) {
     this.tasks = this.storage.get('tasks');
     this.tasks.find(taskInList => taskInList.id === task.id).complete = !task.complete;
-    // this.tasks.push(task);
     this.storage.set('tasks', this.tasks);
-    // task.complete = !task.complete;
   }
 
   clearCompletedTasks() {
